@@ -23,6 +23,18 @@ export const getUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
+  const { name, email, gender } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ msg: "Name is required" });
+  }
+  if (!email) {
+    return res.status(400).json({ msg: "Email is required" });
+  }
+  if (!gender) {
+    return res.status(400).json({ msg: "Gender is required" });
+  }
+
   try {
     await User.create(req.body);
     res.status(201).json({ msg: "User Created" });
@@ -32,6 +44,18 @@ export const createUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
+  const { name, email, gender } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ msg: "Name is required" });
+  }
+  if (!email) {
+    return res.status(400).json({ msg: "Email is required" });
+  }
+  if (!gender) {
+    return res.status(400).json({ msg: "Gender is required" });
+  }
+
   try {
     await User.update(req.body, {
       where: {

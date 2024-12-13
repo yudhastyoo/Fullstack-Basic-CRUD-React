@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+const usePageTitle = (title) => {
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+};
+
 const UsersList = () => {
+  usePageTitle("Home");
+
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -49,7 +57,7 @@ const UsersList = () => {
                 <td>
                   <Link
                     to={`EditUser/${user.id}`}
-                    className="button is-small is-info"
+                    className="button is-small is-warning mr-3"
                   >
                     Edit
                   </Link>

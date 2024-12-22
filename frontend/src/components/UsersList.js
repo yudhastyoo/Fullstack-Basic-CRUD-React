@@ -44,6 +44,7 @@ const UsersList = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Gender</th>
+              <th>Image</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -54,6 +55,14 @@ const UsersList = () => {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.gender}</td>
+                <td>
+                  <img
+                    className="mt-3"
+                    src={`http://localhost:5001/uploads/${user.picture}`}
+                    alt="Current"
+                    style={{ width: "70px", height: "auto" }}
+                  />
+                </td>
                 <td>
                   <Link
                     to={`EditUser/${user.id}`}

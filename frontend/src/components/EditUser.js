@@ -13,6 +13,8 @@ const EditUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("Male");
+  const [picture, setPicture] = useState(null); // For the new picture
+  const [currentPicture, setCurrentPicture] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -38,12 +40,25 @@ const EditUser = () => {
       return;
     }
 
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("gender", gender);
+    if (picture) formData.append("picture", picture);
+
     try {
-      await axios.patch(`http://localhost:5001/users/${id}`, {
-        name,
-        email,
-        gender,
-      });
+      await axios.patch(
+        `http://localhost:5001/users/${id}`,
+        // {
+        //   name,
+        //   email,
+        //   gender,
+        // }
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -55,6 +70,7 @@ const EditUser = () => {
     setName(response.data.name);
     setEmail(response.data.email);
     setGender(response.data.gender);
+    setCurrentPicture(response.data.picture);
   };
 
   const backToHome = () => {
@@ -102,6 +118,21 @@ const EditUser = () => {
                 </select>
               </div>
             </div>
+          </div>
+          <div className="field">
+            <label className="label">Picture</label>
+            <input
+              type="file"
+              className="input"
+              onChange={(e) => setPicture(e.target.files[0])}
+            />
+            {currentPicture && (
+              <img
+                className="mt-3"
+                src={`http://localhost:5001/uploads/${currentPicture}`}
+                alt="Current"
+              />
+            )}
           </div>
           <div className="field">
             <button type="submit" className="button is-success mr-3">

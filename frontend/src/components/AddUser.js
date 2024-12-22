@@ -13,6 +13,7 @@ const AddUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("Male");
+  const [picture, setPicture] = useState(null);
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
@@ -33,12 +34,25 @@ const AddUser = () => {
       return;
     }
 
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("gender", gender);
+    if (picture) formData.append("picture", picture);
+
     try {
-      await axios.post("http://localhost:5001/users", {
-        name,
-        email,
-        gender,
-      });
+      await axios.post(
+        "http://localhost:5001/users",
+        formData,
+        // {
+        //   name,
+        //   email,
+        //   gender,
+        // }
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -89,6 +103,14 @@ const AddUser = () => {
                 </select>
               </div>
             </div>
+          </div>
+          <div className="field">
+            <label className="label">Picture</label>
+            <input
+              type="file"
+              className="input"
+              onChange={(e) => setPicture(e.target.files[0])}
+            />
           </div>
           <div className="field is-flex">
             <button type="submit" className="button is-success mr-3">
